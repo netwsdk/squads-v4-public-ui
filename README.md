@@ -5,10 +5,15 @@ This repository contains the code for a source available Squads V4 user interfac
 # Important Changes
 
 Configuration on cookies has been disabled.
+
 All parameters must be written in the souce code config/params.ts.
+
 The orignal source code of squads offical github has bugs on spl-2022 token transaction. This code has fixed the bugs!
+
 This project must work with a proxy of solana RPC api server, because the solana RPC server rejects the request from http://localhost:3000/ !!!
+
 So we need a proxy server: can get the RPC request from localhost, and then submit the same RPC request to solana RPC server, get the response and then send it to localhost.
+
 Solana RPC server will allow the client application to call the RPC api, but will reject all the requests from client's browsers(with host name localhost).
 
 I write the proxy server by using python, may upload to github at a later time.
