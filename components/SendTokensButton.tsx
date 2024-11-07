@@ -66,17 +66,12 @@ const SendTokens = ({
       walletModal.setVisible(true);
       return;
     }
-    console.log("walletModal.setVisible=true done");
-
     const recipientATA = getAssociatedTokenAddressSync(
       new PublicKey(mint),
       new PublicKey(recipient),
       true,
       new PublicKey(getTokenProgramID())
     );
-
-    console.log("getAssociatedTokenAddressSync done:");
-    console.log(recipientATA);
 
     const vaultAddress = multisig
       .getVaultPda({
@@ -86,8 +81,6 @@ const SendTokens = ({
       })[0]
       .toBase58();
 
-      console.log("vaultAddress="+vaultAddress);
-
     const createRecipientATAInstruction =
       createAssociatedTokenAccountIdempotentInstruction(
         new PublicKey(vaultAddress),
@@ -96,8 +89,6 @@ const SendTokens = ({
         new PublicKey(mint),
         new PublicKey(getTokenProgramID())
       );
-
-      console.log("createRecipientATAInstruction done");
 
     const transferInstruction = createTransferCheckedInstruction(
       new PublicKey(tokenAccount),
@@ -109,24 +100,17 @@ const SendTokens = ({
       [],
       new PublicKey(getTokenProgramID())
     );
-    console.log("createTransferCheckedInstruction done");
 
     const connection = new Connection(rpcUrl || clusterApiUrl("mainnet-beta"), {
       commitment: "confirmed",
     });
 
-    console.log("try multisig.accounts.Multisig.fromAccountAddress:"+multisigPda);
-    
     const multisigInfo = await multisig.accounts.Multisig.fromAccountAddress(
       connection,
       new PublicKey(multisigPda)
     );
-    console.log("get multisigInfo:");
-    console.log(multisigInfo);
 
     const blockhash = (await connection.getLatestBlockhash()).blockhash;
-    console.log("get last blockhash:");
-    console.log(blockhash);
 
     const transferMessage = new TransactionMessage({
       instructions: [createRecipientATAInstruction, transferInstruction],
@@ -184,7 +168,7 @@ const SendTokens = ({
     toast.loading("Confirming...", {
       id: "transaction",
     });
-    await connection.confirmTransaction(signature, "confirmed");
+    await connection.getSignatureStatuses([signature]);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     router.refresh();
   };

@@ -154,16 +154,18 @@ const ExecuteButton = ({
     toast.loading("Confirming...", {
       id: "transaction",
     });
-    await connection.confirmTransaction(signature, "confirmed");
+    await connection.getSignatureStatuses([signature]);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     router.refresh();
   };
+  
   return (
     <Dialog>
-      <DialogTrigger disabled={!isTransactionReady}>
-        <Button disabled={!isTransactionReady} className="mr-2">
-          Execute
-        </Button>
+      <DialogTrigger
+        disabled={!isTransactionReady}
+        className="mr-2 h-10 px-4 py-2 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md disabled:pointer-events-none disabled:opacity-50"
+      >
+        Execute
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

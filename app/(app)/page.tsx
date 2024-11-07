@@ -4,7 +4,6 @@ import * as multisig from "@sqds/multisig";
 import { TokenList } from "@/components/TokenList";
 import { VaultDisplayer } from "@/components/VaultDisplayer";
 import ConnectWallet from "@/components/ConnectWalletButton";
-
 import { getRpcUrl, getMultisigAddress, getSquadsProgramID, getTokenProgramID, getVaultIndex } from "@/config/params";
 
 export default async function Home() {
